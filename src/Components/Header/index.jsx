@@ -18,7 +18,7 @@ const data = {
   menuLinks: [
     { text: "Home", href: "/" },
     { text: "About", href: "/about" },
-    { text: "Products", href: "/products" },
+    { text: "Projects", href: "/products" },
     { text: "New Launches", href: "/new-launches" },
     { text: "Contact", href: "/contact" }
   ],
