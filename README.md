@@ -14,7 +14,7 @@ pnpm dev
 bun dev
 ```
 
-Open [https://webitya.pages.dev](https://webitya.pages.dev) with your browser to see the result.
+Open [https://webitya-in.pages.dev/ ](https://webitya-in.pages.dev/ ) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
