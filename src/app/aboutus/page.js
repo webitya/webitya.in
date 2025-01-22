@@ -1,4 +1,4 @@
-import SEO from "../../components/SEO";
+import SEO from "@/Components/SEO"
 
 export default function AboutUs() {
   return (
