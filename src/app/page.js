@@ -1,6 +1,6 @@
 import Navbar from "@/Components/Header";
 import HomeCarousel from "@/Components/HomeCarousel";
-import SEO from "@/Components/SEO";
+import SEO from "@/Components/SEO"
 
 export default function Home() {
   return (
