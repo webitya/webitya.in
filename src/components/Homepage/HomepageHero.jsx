@@ -1,11 +1,24 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { PlayArrow, School, TrendingUp } from "@mui/icons-material"
 import Link from "next/link"
 import HeroScene3D from "./HeroScene3D"
 
 export default function HomepageHero() {
+  const [isLargeScreen, setIsLargeScreen] = useState(true)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1024px)")
+    setIsLargeScreen(mediaQuery.matches)
+
+    const handler = (e) => setIsLargeScreen(e.matches)
+    mediaQuery.addEventListener("change", handler)
+
+    return () => mediaQuery.removeEventListener("change", handler)
+  }, [])
+
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4 py-20">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
@@ -79,14 +92,16 @@ export default function HomepageHero() {
           </motion.div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          className="relative h-[600px] w-full"
-        >
-          <HeroScene3D />
-        </motion.div>
+        {isLargeScreen && (
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="relative h-[600px] w-full"
+          >
+            <HeroScene3D />
+          </motion.div>
+        )}
       </div>
     </section>
   )
