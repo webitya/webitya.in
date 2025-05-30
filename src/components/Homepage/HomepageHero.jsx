@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { PlayArrow, School, TrendingUp } from "@mui/icons-material"
 import Link from "next/link"
+import HeroScene3D from "./HeroScene3D"
 
 export default function HomepageHero() {
   return (
@@ -82,16 +83,9 @@ export default function HomepageHero() {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative"
+          className="relative h-[600px] w-full"
         >
-          <div className="relative z-10">
-            <img
-              src="/placeholder.svg?height=600&width=600"
-              alt="Learning Platform"
-              className="w-full h-auto rounded-2xl shadow-2xl"
-            />
-          </div>
-          <div className="absolute -top-4 -right-4 w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl -z-10"></div>
+          <HeroScene3D />
         </motion.div>
       </div>
     </section>
