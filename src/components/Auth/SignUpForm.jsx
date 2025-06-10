@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Person, Email, Lock, Visibility, VisibilityOff, Home, ArrowBack } from "@mui/icons-material"
+import { Person, Email, Lock, Visibility, VisibilityOff, ArrowBack } from "@mui/icons-material"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
@@ -57,21 +57,20 @@ export default function SignUpForm() {
   }
 
   return (
-    <div className="relative">
-      {/* Back to Home Button */}
+    <div className="relative min-h-screen flex items-center justify-center p-4">
+      {/* Back to Home Button - Redesigned */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="absolute -top-16 left-0 z-10"
+        className="fixed top-4 left-4 z-50"
       >
         <Link
           href="/"
-          className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-all duration-300 group"
+          className="flex items-center justify-center w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2 bg-white/90 backdrop-blur-md rounded-full md:rounded-xl shadow-lg hover:shadow-xl text-gray-700 hover:text-blue-600 transition-all duration-300 group border border-white/20"
         >
-          <ArrowBack className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          <Home className="w-4 h-4" />
-          <span className="text-sm font-medium">Home</span>
+          <ArrowBack className="w-5 h-5 md:w-4 md:h-4 group-hover:-translate-x-1 transition-transform" />
+          <span className="hidden md:inline-block ml-2 text-sm font-medium">Back to Home</span>
         </Link>
       </motion.div>
 
@@ -79,11 +78,11 @@ export default function SignUpForm() {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, type: "spring" }}
-        className="relative bg-white/95 backdrop-blur-xl p-6 rounded-3xl shadow-2xl border border-white/20 max-w-md mx-auto"
+        className="relative bg-white/95 backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-2xl border border-white/20 w-full max-w-md mx-auto"
       >
-        {/* Decorative Elements */}
-        <div className="absolute -top-2 -right-2 w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full opacity-20 blur-xl"></div>
-        <div className="absolute -bottom-2 -left-2 w-16 h-16 bg-gradient-to-br from-pink-400 to-orange-500 rounded-full opacity-20 blur-xl"></div>
+        {/* Decorative Elements - Hidden on mobile */}
+        <div className="hidden md:block absolute -top-2 -right-2 w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full opacity-20 blur-xl"></div>
+        <div className="hidden md:block absolute -bottom-2 -left-2 w-16 h-16 bg-gradient-to-br from-pink-400 to-orange-500 rounded-full opacity-20 blur-xl"></div>
 
         {/* Header */}
         <div className="text-center mb-6 relative z-10">
@@ -95,7 +94,7 @@ export default function SignUpForm() {
           >
             <Person className="text-white text-2xl" />
           </motion.div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-1">
+          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
             Join Webitya
           </h1>
           <p className="text-sm text-gray-500">Start your learning journey today</p>
@@ -121,7 +120,7 @@ export default function SignUpForm() {
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400 text-sm"
+                className="w-full pl-10 pr-4 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400 text-sm md:text-base"
                 placeholder="Full Name"
               />
             </div>
@@ -136,14 +135,14 @@ export default function SignUpForm() {
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400 text-sm"
+                className="w-full pl-10 pr-4 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400 text-sm md:text-base"
                 placeholder="Email Address"
               />
             </div>
           </motion.div>
 
-          {/* Password Fields Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {/* Password Fields - Stack on mobile, side by side on desktop */}
+          <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-3">
             {/* Password Field */}
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
               <div className="relative group">
@@ -153,7 +152,7 @@ export default function SignUpForm() {
                   required
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full pl-10 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400 text-sm"
+                  className="w-full pl-10 pr-10 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400 text-sm md:text-base"
                   placeholder="Password"
                 />
                 <button
@@ -175,8 +174,8 @@ export default function SignUpForm() {
                   required
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  className="w-full pl-10 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400 text-sm"
-                  placeholder="Confirm"
+                  className="w-full pl-10 pr-10 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400 text-sm md:text-base"
+                  placeholder="Confirm Password"
                 />
                 <button
                   type="button"
@@ -196,7 +195,7 @@ export default function SignUpForm() {
             transition={{ delay: 0.7 }}
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg disabled:scale-100 disabled:shadow-none text-sm"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white py-3 md:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg disabled:scale-100 disabled:shadow-none text-sm md:text-base"
           >
             {loading ? (
               <div className="flex items-center justify-center gap-2">

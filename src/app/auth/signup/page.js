@@ -1,17 +1,18 @@
 import SignUpForm from "@/components/Auth/SignUpForm"
-import Auth3D from "@/components/Auth/Auth3D"
+
+export const metadata = {
+  title: "Sign Up - Webitya",
+  description: "Create your Webitya account and start your learning journey",
+}
 
 export default function SignUpPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
-      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-        <div className="order-2 lg:order-1">
-          <Auth3D />
-        </div>
-        <div className="order-1 lg:order-2">
-          <SignUpForm />
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
+      {/* Hide 3D component on mobile */}
+      <div className="hidden lg:block absolute inset-0 opacity-30">
+        {/* 3D component would go here for desktop only */}
       </div>
+      <SignUpForm />
     </div>
   )
 }
