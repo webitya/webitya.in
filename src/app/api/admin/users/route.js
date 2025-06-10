@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { connectDB } from "@/lib/mongodb"
 import User from "@/models/User"
 import bcrypt from "bcryptjs"
+import logger from "@/lib/logger"
 
 export async function GET(request) {
   try {
@@ -42,6 +43,12 @@ export async function GET(request) {
       User.countDocuments(query),
     ])
 
+    logger.info("Users fetched successfully", {
+      userId: session.user.id,
+      count: users.length,
+      filters: { search, role, status },
+    })
+
     return NextResponse.json({
       users,
       total,
@@ -50,7 +57,7 @@ export async function GET(request) {
       pages: Math.ceil(total / limit),
     })
   } catch (error) {
-    console.error("Error fetching users:", error)
+    logger.error("Error fetching users:", error)
     return NextResponse.json({ error: "Failed to fetch users" }, { status: 500 })
   }
 }
@@ -93,9 +100,15 @@ export async function POST(request) {
     // Remove password from response
     const { password: _, ...userResponse } = user.toObject()
 
+    logger.info("User created successfully", {
+      adminId: session.user.id,
+      newUserId: user._id,
+      email: user.email,
+    })
+
     return NextResponse.json(userResponse, { status: 201 })
   } catch (error) {
-    console.error("Error creating user:", error)
+    logger.error("Error creating user:", error)
     return NextResponse.json({ error: "Failed to create user" }, { status: 500 })
   }
 }

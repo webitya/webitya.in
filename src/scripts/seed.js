@@ -31,53 +31,43 @@ const seedData = async () => {
     // Create instructor users
     const instructorPassword = await bcrypt.hash("instructor123", 12)
     const johnDoe = await User.create({
-      name: "John Doe",
+      name: "John Smith",
       email: "john@webitya.com",
       password: instructorPassword,
       role: "instructor",
       isVerified: true,
-      bio: "Senior Web Developer with 10+ years of experience in full-stack development.",
+      bio: "Full-stack developer with 10+ years of experience. Former senior developer at Google and Facebook.",
       profilePicture: "https://randomuser.me/api/portraits/men/32.jpg",
     })
 
-    const janeSmith = await User.create({
-      name: "Jane Smith",
-      email: "jane@webitya.com",
+    const lisaThompson = await User.create({
+      name: "Lisa Thompson",
+      email: "lisa@webitya.com",
       password: instructorPassword,
       role: "instructor",
       isVerified: true,
-      bio: "Digital Marketing Specialist with expertise in SEO, SEM, and Social Media Marketing.",
+      bio: "Digital marketing expert with 8+ years of experience. Helped 500+ businesses grow their online presence.",
       profilePicture: "https://randomuser.me/api/portraits/women/44.jpg",
     })
 
-    const michaelJohnson = await User.create({
-      name: "Michael Johnson",
-      email: "michael@webitya.com",
-      password: instructorPassword,
-      role: "instructor",
-      isVerified: true,
-      bio: "AI and Machine Learning expert with a PhD in Computer Science.",
-      profilePicture: "https://randomuser.me/api/portraits/men/67.jpg",
-    })
-
-    // Create sample courses
+    // Create only two courses
     const courses = [
       {
         title: "Complete Web Development Bootcamp 2024",
         slug: "complete-web-development-bootcamp-2024",
         description:
-          "Learn HTML, CSS, JavaScript, React, Node.js and more in this comprehensive course. Build real-world projects and gain the skills needed to become a full-stack web developer.",
-        instructor: "John Doe",
+          "Master HTML, CSS, JavaScript, React, Node.js, and MongoDB in this comprehensive full-stack development course with real-world projects and career guidance.",
+        instructor: "John Smith",
         price: 4999,
         thumbnail:
           "https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
         category: "Web Development",
         level: "Beginner",
-        totalDuration: 4200,
+        totalDuration: 2520,
         isPublished: true,
-        enrolledStudents: 1245,
+        enrolledStudents: 15420,
         rating: 4.8,
-        reviews: 328,
+        reviews: 2547,
         chapters: [
           {
             title: "Introduction to Web Development",
@@ -117,75 +107,21 @@ const seedData = async () => {
         ],
       },
       {
-        title: "Advanced React & Redux 2024",
-        slug: "advanced-react-redux-2024",
+        title: "Digital Marketing Mastery 2024",
+        slug: "digital-marketing-mastery",
         description:
-          "Take your React skills to the next level with advanced patterns, hooks, context API, and Redux. Build complex applications with best practices and modern techniques.",
-        instructor: "John Doe",
-        price: 5999,
-        thumbnail:
-          "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-        category: "Web Development",
-        level: "Advanced",
-        totalDuration: 3600,
-        isPublished: true,
-        enrolledStudents: 842,
-        rating: 4.9,
-        reviews: 215,
-        chapters: [
-          {
-            title: "React Fundamentals Recap",
-            description: "Quick review of React fundamentals",
-            videoUrl: "https://example.com/videos/react-recap.mp4",
-            duration: 60,
-            order: 1,
-          },
-          {
-            title: "Advanced React Hooks",
-            description: "Deep dive into React hooks",
-            videoUrl: "https://example.com/videos/advanced-hooks.mp4",
-            duration: 180,
-            order: 2,
-          },
-          {
-            title: "Context API & State Management",
-            description: "Managing state with Context API",
-            videoUrl: "https://example.com/videos/context-api.mp4",
-            duration: 150,
-            order: 3,
-          },
-          {
-            title: "Redux Fundamentals",
-            description: "Introduction to Redux state management",
-            videoUrl: "https://example.com/videos/redux-basics.mp4",
-            duration: 210,
-            order: 4,
-          },
-          {
-            title: "Advanced Redux Patterns",
-            description: "Redux middleware, thunks, and sagas",
-            videoUrl: "https://example.com/videos/redux-advanced.mp4",
-            duration: 240,
-            order: 5,
-          },
-        ],
-      },
-      {
-        title: "Digital Marketing Masterclass",
-        slug: "digital-marketing-masterclass",
-        description:
-          "Master digital marketing strategies including SEO, SEM, social media marketing, content marketing, email marketing, and analytics. Learn to create effective campaigns and measure results.",
-        instructor: "Jane Smith",
-        price: 3999,
+          "Complete digital marketing course covering SEO, social media marketing, Google Ads, email marketing, and analytics for business growth.",
+        instructor: "Lisa Thompson",
+        price: 6999,
         thumbnail:
           "https://images.unsplash.com/photo-1533750516457-a7f992034fec?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
         category: "Digital Marketing",
-        level: "Intermediate",
-        totalDuration: 3000,
+        level: "Beginner",
+        totalDuration: 1500,
         isPublished: true,
-        enrolledStudents: 1876,
-        rating: 4.7,
-        reviews: 423,
+        enrolledStudents: 13567,
+        rating: 4.5,
+        reviews: 2134,
         chapters: [
           {
             title: "Digital Marketing Overview",
@@ -224,168 +160,6 @@ const seedData = async () => {
           },
         ],
       },
-      {
-        title: "AI and Machine Learning Fundamentals",
-        slug: "ai-machine-learning-fundamentals",
-        description:
-          "Learn the fundamentals of artificial intelligence and machine learning. Understand key algorithms, neural networks, deep learning, and practical applications of AI.",
-        instructor: "Michael Johnson",
-        price: 6999,
-        thumbnail:
-          "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-        category: "Data Science",
-        level: "Intermediate",
-        totalDuration: 4500,
-        isPublished: true,
-        enrolledStudents: 1024,
-        rating: 4.9,
-        reviews: 287,
-        chapters: [
-          {
-            title: "Introduction to AI and ML",
-            description: "Overview of artificial intelligence and machine learning",
-            videoUrl: "https://example.com/videos/ai-intro.mp4",
-            duration: 60,
-            order: 1,
-          },
-          {
-            title: "Data Preprocessing",
-            description: "Techniques for preparing data for ML models",
-            videoUrl: "https://example.com/videos/data-preprocessing.mp4",
-            duration: 150,
-            order: 2,
-          },
-          {
-            title: "Supervised Learning Algorithms",
-            description: "Understanding classification and regression algorithms",
-            videoUrl: "https://example.com/videos/supervised-learning.mp4",
-            duration: 210,
-            order: 3,
-          },
-          {
-            title: "Neural Networks",
-            description: "Building and training neural networks",
-            videoUrl: "https://example.com/videos/neural-networks.mp4",
-            duration: 240,
-            order: 4,
-          },
-          {
-            title: "Deep Learning Applications",
-            description: "Practical applications of deep learning",
-            videoUrl: "https://example.com/videos/deep-learning.mp4",
-            duration: 180,
-            order: 5,
-          },
-        ],
-      },
-      {
-        title: "UI/UX Design Principles",
-        slug: "ui-ux-design-principles",
-        description:
-          "Master the principles of UI/UX design. Learn to create user-centered designs, wireframes, prototypes, and conduct usability testing for exceptional user experiences.",
-        instructor: "Jane Smith",
-        price: 4499,
-        thumbnail:
-          "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-        category: "Design",
-        level: "Beginner",
-        totalDuration: 2800,
-        isPublished: true,
-        enrolledStudents: 1532,
-        rating: 4.8,
-        reviews: 356,
-        chapters: [
-          {
-            title: "Introduction to UI/UX Design",
-            description: "Understanding the fundamentals of user interface and user experience design",
-            videoUrl: "https://example.com/videos/uiux-intro.mp4",
-            duration: 45,
-            order: 1,
-          },
-          {
-            title: "User Research Methods",
-            description: "Techniques for understanding user needs and behaviors",
-            videoUrl: "https://example.com/videos/user-research.mp4",
-            duration: 120,
-            order: 2,
-          },
-          {
-            title: "Wireframing and Prototyping",
-            description: "Creating wireframes and interactive prototypes",
-            videoUrl: "https://example.com/videos/wireframing.mp4",
-            duration: 180,
-            order: 3,
-          },
-          {
-            title: "Visual Design Principles",
-            description: "Color theory, typography, and layout principles",
-            videoUrl: "https://example.com/videos/visual-design.mp4",
-            duration: 150,
-            order: 4,
-          },
-          {
-            title: "Usability Testing",
-            description: "Methods for testing and improving user experiences",
-            videoUrl: "https://example.com/videos/usability-testing.mp4",
-            duration: 120,
-            order: 5,
-          },
-        ],
-      },
-      {
-        title: "Python for Data Science",
-        slug: "python-for-data-science",
-        description:
-          "Learn Python programming for data science. Master data manipulation, visualization, statistical analysis, and machine learning using Python libraries like Pandas, NumPy, and Scikit-learn.",
-        instructor: "Michael Johnson",
-        price: 5499,
-        thumbnail:
-          "https://images.unsplash.com/photo-1526379879527-8559ecfcb970?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-        category: "Data Science",
-        level: "Beginner",
-        totalDuration: 3600,
-        isPublished: true,
-        enrolledStudents: 2145,
-        rating: 4.9,
-        reviews: 512,
-        chapters: [
-          {
-            title: "Python Basics for Data Science",
-            description: "Introduction to Python programming for data analysis",
-            videoUrl: "https://example.com/videos/python-basics.mp4",
-            duration: 90,
-            order: 1,
-          },
-          {
-            title: "Data Manipulation with Pandas",
-            description: "Working with data using the Pandas library",
-            videoUrl: "https://example.com/videos/pandas.mp4",
-            duration: 180,
-            order: 2,
-          },
-          {
-            title: "Data Visualization",
-            description: "Creating visualizations with Matplotlib and Seaborn",
-            videoUrl: "https://example.com/videos/data-viz.mp4",
-            duration: 150,
-            order: 3,
-          },
-          {
-            title: "Statistical Analysis",
-            description: "Performing statistical analysis with Python",
-            videoUrl: "https://example.com/videos/stats-analysis.mp4",
-            duration: 180,
-            order: 4,
-          },
-          {
-            title: "Machine Learning with Scikit-learn",
-            description: "Building machine learning models with Scikit-learn",
-            videoUrl: "https://example.com/videos/scikit-learn.mp4",
-            duration: 210,
-            order: 5,
-          },
-        ],
-      },
     ]
 
     await Course.insertMany(courses)
@@ -402,6 +176,9 @@ const seedData = async () => {
     })
 
     console.log("Sample data created successfully")
+    console.log("Only 2 courses created:")
+    console.log("1. Complete Web Development Bootcamp 2024 - ₹4,999")
+    console.log("2. Digital Marketing Mastery 2024 - ₹6,999")
     process.exit(0)
   } catch (error) {
     console.error("Error seeding data:", error)

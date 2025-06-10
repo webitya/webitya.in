@@ -1,190 +1,259 @@
 "use client"
 
 import { motion } from "framer-motion"
-import {
-  Star,
-  Person,
-  AccessTime,
-  PlayArrow,
-  Bookmark,
-  BookmarkBorder,
-  Share,
-  TrendingUp,
-  CheckCircle,
-} from "@mui/icons-material"
+import { Star, Clock, Users, BookOpen, ArrowRight, Heart, Share2 } from "lucide-react"
 import Link from "next/link"
-import { useSession } from "next-auth/react"
 import { useState } from "react"
 
-export default function CourseCard({ course, index = 0 }) {
-  const { data: session } = useSession()
-  const [isBookmarked, setIsBookmarked] = useState(false)
-  const [imageLoaded, setImageLoaded] = useState(false)
+export default function CourseCard({ course, viewMode = "grid", index = 0 }) {
+  const [isWishlisted, setIsWishlisted] = useState(false)
+  const [imageError, setImageError] = useState(false)
 
-  const isEnrolled = session?.user?.purchasedCourses?.some((pc) => pc.courseId === course._id)
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      minimumFractionDigits: 0,
+    }).format(price)
+  }
 
-  const handleBookmark = (e) => {
+  const calculateDiscount = () => {
+    if (course.originalPrice && course.price) {
+      return Math.round(((course.originalPrice - course.price) / course.originalPrice) * 100)
+    }
+    return 0
+  }
+
+  const handleWishlist = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    setIsBookmarked(!isBookmarked)
-    // Implement bookmark functionality
+    setIsWishlisted(!isWishlisted)
   }
 
   const handleShare = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    // Implement share functionality
     if (navigator.share) {
       navigator.share({
         title: course.title,
         text: course.description,
-        url: window.location.href + `/${course.slug || course._id}`,
+        url: `/courses/${course.slug}`,
       })
     }
   }
 
-  const formatDuration = (minutes) => {
-    const hours = Math.floor(minutes / 60)
-    const mins = minutes % 60
-    return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`
+  if (viewMode === "list") {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: index * 0.1 }}
+        className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group"
+      >
+        <Link href={`/courses/${course.slug}`} className="block">
+          <div className="flex flex-col sm:flex-row">
+            {/* Image Section */}
+            <div className="relative sm:w-80 h-48 sm:h-auto flex-shrink-0">
+              <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                <BookOpen className="w-16 h-16 text-blue-500" />
+              </div>
+
+              {/* Badges */}
+              <div className="absolute top-4 left-4 flex flex-col gap-2">
+                {course.isBestseller && (
+                  <span className="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">BESTSELLER</span>
+                )}
+                {course.isNew && (
+                  <span className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">NEW</span>
+                )}
+                {calculateDiscount() > 0 && (
+                  <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                    {calculateDiscount()}% OFF
+                  </span>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button
+                  onClick={handleWishlist}
+                  className={`p-2 rounded-full backdrop-blur-sm transition-colors ${
+                    isWishlisted
+                      ? "bg-red-500 text-white"
+                      : "bg-white/80 text-gray-600 hover:bg-red-500 hover:text-white"
+                  }`}
+                >
+                  <Heart className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={handleShare}
+                  className="p-2 rounded-full bg-white/80 text-gray-600 hover:bg-blue-500 hover:text-white backdrop-blur-sm transition-colors"
+                >
+                  <Share2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Content Section */}
+            <div className="flex-1 p-6">
+              <div className="flex flex-col h-full">
+                {/* Header */}
+                <div className="mb-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full">
+                      {course.category}
+                    </span>
+                    <span className="bg-gray-100 text-gray-600 text-xs font-medium px-2 py-1 rounded-full">
+                      {course.level}
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
+                    {course.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm line-clamp-2 mb-3">{course.description}</p>
+                  <p className="text-sm text-gray-500 mb-2">by {course.instructor}</p>
+                </div>
+
+                {/* Stats */}
+                <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                    <span className="font-semibold">{course.rating}</span>
+                    <span>({course.reviews.toLocaleString()})</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Users className="w-4 h-4" />
+                    <span>{course.students.toLocaleString()} students</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-4 h-4" />
+                    <span>{course.duration}</span>
+                  </div>
+                </div>
+
+                {/* Footer */}
+                <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-center gap-2">
+                    {course.originalPrice && (
+                      <span className="text-gray-400 line-through text-sm">{formatPrice(course.originalPrice)}</span>
+                    )}
+                    <span className="text-2xl font-bold text-gray-900">
+                      {course.price === 0 ? "Free" : formatPrice(course.price)}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-blue-600 font-semibold group-hover:gap-3 transition-all">
+                    <span>Learn More</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Link>
+      </motion.div>
+    )
   }
 
-  const formatPrice = (price) => {
-    return price === 0 ? "Free" : `$${price}`
-  }
-
+  // Grid View
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-blue-200"
+      transition={{ duration: 0.3, delay: index * 0.1 }}
+      className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group"
     >
-      {/* Course Image */}
-      <div className="relative overflow-hidden aspect-video">
-        <div className={`absolute inset-0 bg-gray-200 animate-pulse ${imageLoaded ? "hidden" : "block"}`} />
-        <img
-          src={course.thumbnail || "/placeholder.svg?height=200&width=300"}
-          alt={course.title}
-          className={`w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ${imageLoaded ? "block" : "hidden"}`}
-          onLoad={() => setImageLoaded(true)}
-        />
-
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-        {/* Play Button */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-          <div className="bg-white/90 backdrop-blur-sm rounded-full p-4 transform scale-75 group-hover:scale-100 transition-transform duration-300">
-            <PlayArrow className="text-blue-600 text-3xl" />
-          </div>
-        </div>
-
-        {/* Top Badges */}
-        <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
-          <div className="flex flex-col gap-2">
-            {course.isBestseller && (
-              <span className="bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
-                <TrendingUp className="w-3 h-3" />
-                Bestseller
-              </span>
-            )}
-            {isEnrolled && (
-              <span className="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
-                <CheckCircle className="w-3 h-3" />
-                Enrolled
-              </span>
-            )}
-            {course.price === 0 && (
-              <span className="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">Free</span>
-            )}
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <button
-              onClick={handleBookmark}
-              className="bg-white/90 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-colors"
-            >
-              {isBookmarked ? (
-                <Bookmark className="w-4 h-4 text-blue-600" />
-              ) : (
-                <BookmarkBorder className="w-4 h-4 text-gray-600" />
-              )}
-            </button>
-            <button
-              onClick={handleShare}
-              className="bg-white/90 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-colors"
-            >
-              <Share className="w-4 h-4 text-gray-600" />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Course Content */}
-      <div className="p-6">
-        {/* Category and Level */}
-        <div className="flex items-center justify-between mb-3">
-          <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full">
-            {course.category}
-          </span>
-          <span className="text-sm text-gray-500 font-medium">{course.level}</span>
-        </div>
-
-        {/* Title */}
-        <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors">
-          {course.title}
-        </h3>
-
-        {/* Description */}
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">{course.description}</p>
-
-        {/* Instructor and Duration */}
-        <div className="flex items-center gap-4 mb-4 text-sm text-gray-500">
-          <div className="flex items-center gap-1">
-            <Person className="w-4 h-4" />
-            <span className="font-medium">{course.instructor}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <AccessTime className="w-4 h-4" />
-            <span>{formatDuration(course.totalDuration)}</span>
-          </div>
-        </div>
-
-        {/* Rating and Students */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-4 h-4 ${i < Math.floor(course.rating || 4.8) ? "text-yellow-400" : "text-gray-300"}`}
-                />
-              ))}
+      <Link href={`/courses/${course.slug}`} className="block h-full">
+        <div className="flex flex-col h-full">
+          {/* Image Section */}
+          <div className="relative h-48 overflow-hidden">
+            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+              <BookOpen className="w-16 h-16 text-blue-500" />
             </div>
-            <span className="text-sm font-medium text-gray-700">{course.rating || "4.8"}</span>
-            <span className="text-sm text-gray-500">({course.enrolledStudents || 0})</span>
+
+            {/* Badges */}
+            <div className="absolute top-4 left-4 flex flex-col gap-2">
+              {course.isBestseller && (
+                <span className="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">BESTSELLER</span>
+              )}
+              {course.isNew && (
+                <span className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">NEW</span>
+              )}
+              {calculateDiscount() > 0 && (
+                <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                  {calculateDiscount()}% OFF
+                </span>
+              )}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button
+                onClick={handleWishlist}
+                className={`p-2 rounded-full backdrop-blur-sm transition-colors ${
+                  isWishlisted ? "bg-red-500 text-white" : "bg-white/80 text-gray-600 hover:bg-red-500 hover:text-white"
+                }`}
+              >
+                <Heart className="w-4 h-4" />
+              </button>
+              <button
+                onClick={handleShare}
+                className="p-2 rounded-full bg-white/80 text-gray-600 hover:bg-blue-500 hover:text-white backdrop-blur-sm transition-colors"
+              >
+                <Share2 className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Content Section */}
+          <div className="p-6 flex flex-col flex-1">
+            {/* Header */}
+            <div className="mb-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full">
+                  {course.category}
+                </span>
+                <span className="bg-gray-100 text-gray-600 text-xs font-medium px-2 py-1 rounded-full">
+                  {course.level}
+                </span>
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
+                {course.title}
+              </h3>
+              <p className="text-gray-600 text-sm line-clamp-2 mb-2">{course.description}</p>
+              <p className="text-sm text-gray-500">by {course.instructor}</p>
+            </div>
+
+            {/* Stats */}
+            <div className="flex items-center gap-3 mb-4 text-sm text-gray-600">
+              <div className="flex items-center gap-1">
+                <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                <span className="font-semibold">{course.rating}</span>
+                <span>({course.reviews.toLocaleString()})</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                <span>{course.duration}</span>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-between mt-auto">
+              <div className="flex flex-col">
+                {course.originalPrice && (
+                  <span className="text-gray-400 line-through text-sm">{formatPrice(course.originalPrice)}</span>
+                )}
+                <span className="text-xl font-bold text-gray-900">
+                  {course.price === 0 ? "Free" : formatPrice(course.price)}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 text-blue-600 font-semibold group-hover:gap-3 transition-all">
+                <span className="text-sm">Enroll</span>
+                <ArrowRight className="w-4 h-4" />
+              </div>
+            </div>
           </div>
         </div>
-
-        {/* Price and CTA */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl font-bold text-gray-900">{formatPrice(course.price)}</span>
-            {course.originalPrice && course.originalPrice > course.price && (
-              <span className="text-sm text-gray-500 line-through">${course.originalPrice}</span>
-            )}
-          </div>
-
-          <Link
-            href={`/courses/${course.slug || course._id}`}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 hover:shadow-lg transform hover:scale-105"
-          >
-            {isEnrolled ? "Continue" : "View Course"}
-          </Link>
-        </div>
-      </div>
+      </Link>
     </motion.div>
   )
 }
