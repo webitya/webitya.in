@@ -1,8 +1,8 @@
-import { connectToDatabase } from "@/lib/mongodb"
+import { connectDB } from "@/lib/mongodb" // Fixed import
 import Course from "@/models/Course"
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
-import { logger } from "@/lib/logger"
+import logger from "@/lib/logger" // Fixed import
 import Razorpay from "razorpay"
 import crypto from "crypto"
 
@@ -20,7 +20,7 @@ export async function POST(request) {
       return NextResponse.json({ error: "Course ID is required" }, { status: 400 })
     }
 
-    await connectToDatabase()
+    await connectDB() // Using the correct function name
 
     // Find course by ID or slug
     const course = await Course.findOne({

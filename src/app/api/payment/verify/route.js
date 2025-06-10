@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server"
 import crypto from "crypto"
-import { connectDB } from "@/lib/mongodb"
+import { connectDB } from "@/lib/mongodb" // Fixed import
 import User from "@/models/User"
 import Course from "@/models/Course"
 import { getServerSession } from "next-auth"
-import { logger } from "@/lib/logger"
+import logger from "@/lib/logger" // Fixed import
 
 // Payment model for transaction records
 const PaymentSchema = {
@@ -30,7 +30,7 @@ export async function POST(request) {
     const body = await request.json()
     const { gateway, courseId } = body
 
-    await connectDB()
+    await connectDB() // Using the correct function name
 
     const user = await User.findOne({ email: session.user.email })
     if (!user) {

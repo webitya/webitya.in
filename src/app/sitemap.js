@@ -52,6 +52,8 @@ export default async function sitemap() {
     }))
   } catch (error) {
     console.error("Error generating course sitemap:", error)
+    // Return only static pages if there's an error with MongoDB
+    return staticPages
   }
 
   return [...staticPages, ...coursePages]

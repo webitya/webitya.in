@@ -34,4 +34,6 @@ if (typeof window === "undefined") {
   }
 }
 
+// Export both as default and named export for backward compatibility
 export default logger
+export { logger }

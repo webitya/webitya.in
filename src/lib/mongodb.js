@@ -12,6 +12,7 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null }
 }
 
+// Export both connectDB and connectToDatabase for backward compatibility
 export async function connectDB() {
   if (cached.conn) {
     return cached.conn
@@ -36,3 +37,6 @@ export async function connectDB() {
 
   return cached.conn
 }
+
+// Alias for connectDB to maintain compatibility with existing imports
+export const connectToDatabase = connectDB

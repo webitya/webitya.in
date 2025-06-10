@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import crypto from "crypto"
-import { logger } from "@/lib/logger"
+import logger from "@/lib/logger" // Fixed import
 
 export async function POST(request) {
   try {

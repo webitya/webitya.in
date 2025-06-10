@@ -1,8 +1,3 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {};
-
-// export default nextConfig;
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -16,7 +11,10 @@ const nextConfig = {
     unoptimized: true,
   },
   experimental: {
-    serverActions: true,
+    // Fix: Changed from boolean to object
+    serverActions: {
+      allowedOrigins: ['localhost:3000', 'webitya.in', '*.webitya.in', 'webitya.vercel.app'],
+    },
   },
   webpack: (config, { isServer }) => {
     // Exclude winston from client-side bundle

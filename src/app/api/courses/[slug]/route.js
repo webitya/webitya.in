@@ -1,13 +1,13 @@
-import { connectToDatabase } from "@/lib/mongodb"
-import Course from "@/models/Course"
 import { NextResponse } from "next/server"
-import { logger } from "@/lib/logger"
+import { connectDB } from "@/lib/mongodb" // Fixed import
+import Course from "@/models/Course"
+import logger from "@/lib/logger" // Fixed import
 
 export async function GET(request, { params }) {
   try {
     const { slug } = params
 
-    await connectToDatabase()
+    await connectDB() // Using the correct function name
 
     const course = await Course.findOne({ slug }).lean()
 
