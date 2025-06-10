@@ -14,8 +14,8 @@ function AnimatedDodecahedron() {
 
 export default function About3D() {
   return (
-    <section className="py-20 bg-gray-900 relative overflow-hidden">
-      <div className="absolute inset-0 h-96">
+    <section className="py-16 sm:py-20 lg:py-24 bg-gray-900 relative overflow-hidden">
+      <div className="absolute inset-0 h-64 sm:h-80 lg:h-96">
         <Canvas>
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
@@ -31,8 +31,8 @@ export default function About3D() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">Innovation in Learning</h2>
-          <p className="text-xl text-gray-300">Cutting-edge technology meets educational excellence</p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">Innovation in Learning</h2>
+          <p className="text-lg sm:text-xl text-gray-300">Cutting-edge technology meets educational excellence</p>
         </motion.div>
       </div>
     </section>
